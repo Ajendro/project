@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -16,7 +17,7 @@ var postRouter = require('./routes/post');
 var messageRouter = require('./routes/messages'); 
 var exchangeRouter = require('./routes/exchange'); 
 var bookRouter = require('./routes/book'); 
-var authRouter = require('./routes/authentication'); 
+const loginRoute = require('./routes/login');
 
 var app = express();
 app.use(cors());
@@ -37,7 +38,7 @@ app.use ('/post', postRouter);
 app.use('/messages', messageRouter);
 app.use('/exchange', exchangeRouter);
 app.use('/book', bookRouter);
-app.use('/auth', authRouter);
+app.use('/auth', loginRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

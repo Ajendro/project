@@ -7,7 +7,6 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Exchanges from "./pages/Exchanges";
 import Messager from "./pages/Messager";
 import ButtonHome from "./pages/ButtonHome";
@@ -26,7 +25,6 @@ export default function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} />
           <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
           <Route path="exchanges" element={<Exchanges />} />
           <Route path="messager" element={<Messager />} />
           <Route path="buttonHome" element={<ButtonHome />} />

@@ -8,7 +8,7 @@ const authMiddleware = (req, res, next) => {
     }
 
     try {
-        const verified = jwt.verify(token, 'secretKey'); // Usa la misma clave secreta que en la creación del token
+        const verified = jwt.verify(token, 'secretKey'); 
         req.user = verified;
         next();
     } catch (error) {

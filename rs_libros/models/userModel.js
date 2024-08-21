@@ -11,6 +11,13 @@ const userSchema = new Schema({
     avatar: String,
   },
   createdAt: { type: Date, default: Date.now },
+
+  correo: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  contrasenia: { type: String, required: true },
 });
 
 const User = mongoose.model('User', userSchema);

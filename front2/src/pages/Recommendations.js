@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import RecommendationForm from './RecommendationsList'; 
  // Asegúrate de ajustar la ruta según la estructura de carpetas
 
 const fetchRecommendations = async () => {

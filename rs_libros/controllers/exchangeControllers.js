@@ -1,14 +1,14 @@
-// En controllers/exchangeControllers.js
 const Exchange = require('../models/exchangeModels');
 const User = require('../models/userModel');
 const Book = require('../models/bookModels');
 
+// Crear un nuevo intercambio
 const createExchange = async (req, res) => {
   try {
-    const { title, owner, loanDate, returnDate } = req.body;
+    const { owner, book, loanDate, returnDate, returnCondition, title, requester } = req.body;
 
     // Verificación de campos requeridos
-    if (!title || !owner || !loanDate || !returnDate) {
+    if (!owner || !book || !loanDate || !returnDate || !title) {
       return res.status(400).json({ message: 'Todos los campos son requeridos' });
     }
 
@@ -16,9 +16,11 @@ const createExchange = async (req, res) => {
     const newExchange = new Exchange({
       title,
       owner,
+      book,
       loanDate,
       returnDate,
-      requester: req.user._id, // Asignación del usuario autenticado como requester
+      returnCondition,
+      requester // Asignación del usuario autenticado como requester
     });
 
     // Guardado del intercambio en la base de datos
@@ -28,11 +30,13 @@ const createExchange = async (req, res) => {
     res.status(201).json(newExchange);
   } catch (error) {
     // Manejo de errores
-    console.error('Error al crear el intercambio:', error);
-    res.status(500).json({ message: 'Error al crear el intercambio', error });
+    console.error('Error al crear el intercambio:', error); // Imprimir error en el servidor
+    res.status(500).json({ message: 'Error al crear el intercambio', error: error.message }); // Proveer mensaje de error
   }
 };
 
+
+// Obtener el perfil del usuario
 const getUserProfile = async (req, res) => {
   try {
     const user = req.user;
@@ -43,6 +47,7 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+// Obtener todos los intercambios
 const getAllExchanges = async (req, res) => {
   try {
     const exchanges = await Exchange.find()
@@ -55,9 +60,10 @@ const getAllExchanges = async (req, res) => {
   }
 };
 
+// Obtener un intercambio por ID
 const getExchange = async (req, res) => {
   try {
-    const { id } = req.params; // Cambiar de req.body a req.params
+    const { id } = req.params;
     const exchange = await Exchange.findById(id)
       .populate('requester', 'username')
       .populate('owner', 'username')
@@ -69,32 +75,42 @@ const getExchange = async (req, res) => {
   }
 };
 
+// Actualizar un intercambio
 const updateExchange = async (req, res) => {
   try {
-    const { id } = req.params; // Cambiar de req.body a req.params
-    const { requester, owner, book } = req.body;
+    const { id } = req.params;
+    const { owner, book, loanDate, returnDate, returnCondition, title } = req.body;
 
     // Validar que todos los campos necesarios están presentes
-    if (!requester || !owner || !book) {
-      return res.status(400).json({ error: 'Requester, owner, and book fields are required.' });
+    if (!owner || !book || !loanDate || !returnDate || !title) {
+      return res.status(400).json({ message: 'Todos los campos son requeridos' });
     }
 
-    const exchange = await Exchange.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-    if (!exchange) return res.status(404).json({ error: 'Exchange not found' });
+    const exchange = await Exchange.findByIdAndUpdate(id, {
+      owner,
+      book,
+      loanDate,
+      returnDate,
+      returnCondition,
+      title
+    }, { new: true, runValidators: true });
+
+    if (!exchange) return res.status(404).json({ message: 'Intercambio no encontrado' });
     res.status(200).json(exchange);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
+// Eliminar un intercambio
 const deleteExchange = async (req, res) => {
   try {
-    const { id } = req.params; // Cambiar de req.body a req.params
+    const { id } = req.params;
     const exchange = await Exchange.findByIdAndDelete(id);
-    if (!exchange) return res.status(404).json({ error: 'Exchange not found' });
-    res.status(200).json({ message: 'Exchange deleted successfully' });
+    if (!exchange) return res.status(404).json({ message: 'Intercambio no encontrado' });
+    res.status(200).json({ message: 'Intercambio eliminado correctamente' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

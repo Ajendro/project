@@ -47,7 +47,6 @@ const Header = () => {
                         <li style={navItemStyles}><a href="/About" style={linkStyles}>About</a></li>
                         <li style={navItemStyles}><a href="/Contact" style={linkStyles}>Contact</a></li>
                         <li style={navItemStyles}><a href="/Login" style={linkStyles}>Login</a></li>
-                        <li style={navItemStyles}><a href="/Register" style={linkStyles}>Register</a></li>
                         <li style={navItemStyles}><a href="/Messager" style={linkStyles}>Messager</a></li>
                         <li style={navItemStyles}><a href="/Exchanges" style={linkStyles}>Exchanges</a></li>
                         <li style={navItemStyles}><a href="/Recommendations" style={linkStyles}>Recommendations</a></li>
